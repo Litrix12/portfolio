@@ -8,9 +8,8 @@ paginate: 10
 
 params:
   socials:
-    twitter: https://example.com
-    instagram: https://example.com
-    github: https://example.com
+    twitter: https://twitter.com/Litrix121
+    github: https://github.com/Litrix12
 
   head:
     background:
