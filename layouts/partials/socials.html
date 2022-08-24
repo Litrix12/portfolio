@@ -1,0 +1,6 @@
+{{ $theme := "dark" }}
+{{ with .theme }}{{ $theme = . }}{{ end }}
+
+{{ range $key, $link := .context.Site.Params.socials }}
+<a class="ms-2 link-{{ $theme }}" href="{{ $link }}"><i class="bi bi-{{ $key }}"></i></a>
+{{ end }}

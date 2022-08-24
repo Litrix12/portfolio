@@ -1,0 +1,124 @@
+{{ define "coverstyle" }}
+{{ with .Params.Image }}
+{{ with resources.Get . }}
+{{ $imgOptimised := .Resize "1920x webp photo q90 smart" }}
+<style>
+    .cover {
+        background-image: url("{{ $imgOptimised.Permalink }}");
+    }
+</style>
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{ define "header" }}
+<div class="hero-full container d-flex flex-column justify-content-center"></div>
+{{ end }}
+
+{{ define "main" }}
+<main class="container text-dark">
+    <div class="row gx-5">
+        <section class="col-md-6 col-lg-7 order-last order-md-first">
+            <div class="p-4 mb-4 gallery-description module shadow-lg">
+                {{ .Content }}
+            </div>
+
+            <div class="row">
+                {{ with .Next }}
+                {{ $target := . }}
+                {{ with .Params.Image }}
+                {{ with resources.Get . }}
+                {{ $img := .Fill "400x200 webp photo q90 smart" | images.Filter (images.GaussianBlur 6) (images.Brightness -25) }}
+                <div class="col">
+                    <div class="p-4 mb-4 module shadow-lg position-relative"
+                         style="background-image: url('{{ $img.Permalink }}'); background-size: cover;">
+                        <p class="text-center m-0">
+                            <a class="display-6 link-light text-decoration-none stretched-link" href="{{ $target.Permalink }}">&larr;</a>
+                        </p>
+                    </div>
+                </div>
+                {{ end }}
+                {{ end }}
+                {{ end }}
+
+                {{ with .Prev }}
+                {{ $target := . }}
+                {{ with .Params.Image }}
+                {{ with resources.Get . }}
+                {{ $img := .Fill "400x200 webp photo q90 smart" | images.Filter (images.GaussianBlur 6) (images.Brightness -25) }}
+                <div class="col">
+                    <div class="p-4 mb-4 module shadow-lg position-relative"
+                         style="background-image: url('{{ $img.Permalink }}'); background-size: cover;">
+                        <p class="text-center m-0">
+                            <a class="display-6 link-light text-decoration-none stretched-link" href="{{ $target.Permalink }}">&rarr;</a>
+                        </p>
+                    </div>
+                </div>
+                {{ end }}
+                {{ end }}
+                {{ end }}
+            </div>
+        </section>
+        <section class="col-md-6 col-lg-5">
+            <div class="p-4 mb-4 module shadow-lg">
+                <h1 class="display-6">{{ .Title }}</h1>
+                <p class="text-muted">Published <time datetime="{{ .Date }}">{{ .Date | time.Format ":date_medium" }}</time></p>
+            </div>
+            
+            {{ with .Params.Image }}
+            {{ with resources.Get . }}
+            <div class="mb-4 shadow-lg">
+                <a class="btn btn-dark btn-lg" style="display:block;" href="{{ .Permalink }}">View original &rarr;</a>
+            </div>
+
+            {{ with .Exif }}
+            <div class="p-4 mb-4 module shadow-lg">
+                <dl class="mb-0">
+                    {{ with .Date }}
+                    <dt>Date taken</dt>
+                    <dd>{{ .Format "January 02, 2006" }}</dd>
+                    {{ end }}
+
+                    {{ with .Tags.ApertureValue }}
+                    <dt>Aperture</dt>
+                    <dd>{{ lang.FormatNumber 2 . }}</dd>
+                    {{ end }}
+
+                    {{ with .Tags.BrightnessValue }}
+                    <dt>Brightness</dt>
+                    <dd>{{ lang.FormatNumber 2 . }}</dd>
+                    {{ end }}
+
+                    {{ with .Tags.ExposureTime }}
+                    <dt>Exposure time</dt>
+                    <dd>{{ . }}</dd>
+                    {{ end }}
+
+                    {{ with .Tags.FNumber }}
+                    <dt>F number</dt>
+                    <dd>{{ . }}</dd>
+                    {{ end }}
+
+                    {{ with .Tags.FocalLength }}
+                    <dt>Focal length</dt>
+                    <dd>{{ . }}</dd>
+                    {{ end }}
+
+                    {{ with .Tags.ISOSpeedRatings }}
+                    <dt>ISO speed ratings</dt>
+                    <dd>{{ . }}</dd>
+                    {{ end }}
+
+                    {{ with .Tags.LensModel }}
+                    <dt>Lens model</dt>
+                    <dd>{{ . }}</dd>
+                    {{ end }}
+                </dl>
+            </div>
+            {{ end }}
+            {{ end }}
+            {{ end }}
+        </section>
+    </div>
+</main>
+{{ end }}

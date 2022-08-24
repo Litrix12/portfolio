@@ -1,0 +1,9 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+
+<title>{{ with .Title }}{{ . }} &ndash; {{end}}{{ .Site.Title }}</title>
+{{- with .Site.Params.about }}<meta name="description" content="{{ .description }}">{{ end }}
+
+{{ range .AlternativeOutputFormats -}}
+{{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+{{ end -}}

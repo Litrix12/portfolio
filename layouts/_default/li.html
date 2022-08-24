@@ -1,0 +1,15 @@
+<li class="list-group-item p-4">
+    <h4 class="display-6">{{ .Title | markdownify }}</h4>
+    {{ if eq .Kind "page" }}
+    <p class="mb-3 text-muted">
+        <time datetime="{{ .Date }}">
+            {{ .Date | time.Format ":date_medium" }}
+        </time>
+    </p>
+    {{ end }}
+    
+    {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+    <a class="stretched-link" href="{{ .Permalink }}">
+        {{ if eq .Kind "page" }}Continue reading...{{ else }}More &rarr;{{ end }}
+    </a>
+</li>

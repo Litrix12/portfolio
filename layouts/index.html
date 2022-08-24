@@ -1,0 +1,110 @@
+{{ define "header" }}
+<div class="hero container d-flex flex-column justify-content-center">
+    <div class="px-3 m-5-md">
+        <h1 class="display-1">{{ .Site.Params.home.hero.title }}</h1>
+        {{ with .Site.Params.home.hero.lede }}
+        <p class="lead">{{ . }}</p>
+        {{ end }}
+        <p class="lead">
+            {{ with .Site.Params.home.hero.contactLink }}<a class="btn btn-light shadow me-2" href="{{ . }}">Contact</a>{{ end }}
+            {{- partial "socials.html" ( dict "context" . "theme" "light" ) -}}
+        </p>
+    </div>
+</div>
+{{ end }}
+
+{{ define "main" }}
+<main class="container text-dark">
+    {{ with .Content }}
+    <section class="p-4 mb-5 module shadow-lg">
+        {{ . }}
+    </section>
+    {{ end }}
+    
+    {{ with .Site.GetPage "blog" }}
+    <h2 class="px-4 py-2">Recent Posts</h2>
+    <section class="p-4 mb-5 module shadow-lg">
+        {{ $featured := first 1 (where .Pages "Params.Feature" true) }}
+        {{ with index $featured 0 }}
+            {{ $imgOptimised := "" }}
+            {{ with .Params.Cover }}
+                {{ with resources.Get . }}
+                    {{ $imgOptimised = .Fill "1070x500 webp photo q90 smart" | images.Filter (images.GaussianBlur 6) (images.Brightness -15) }}
+                {{ end }}
+            {{ end }}
+            <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark position-relative"
+                 {{- with $imgOptimised }}style="background-image: url('{{ .Permalink }}'); background-size: cover;"{{ end -}}>
+                <div class="col-md-6 px-0">
+                    <h3 class="display-3">{{ .Title }}</h3>
+                    {{ with .Description }}<p class="lead my-3">{{ . }}</p>{{ end }}
+                    <p class="lead mb-0"><a href="{{ .Permalink }}" class="stretched-link text-white fw-bold">Continue reading...</a></p>
+                </div>
+            </div>
+        {{ end }}
+
+        <div class="row">
+            {{ range first 2 (.Pages | complement $featured) }}
+            <div class="col-md-6">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row shadow-sm h-md-250 mb-4 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2">{{ .Params.Category }}</strong>
+                        <h4 class="mb-0">{{ .Title }}</h4>
+                        <p class="mb-1 text-muted">
+                            <time datetime="{{ .Date }}">
+                                {{ .Date | time.Format ":date_medium" }}
+                            </time>
+                        </p>
+                        {{ with .Description }}<p class="card-text mb-auto">{{ . }}</p>{{ end }}
+                        <a href="{{ .Permalink }}" class="stretched-link">Continue reading...</a>
+                    </div>
+                    {{ with .Params.Cover }}
+                        {{ with resources.Get . }}
+                        <div class="col-auto d-none d-lg-block">
+                            {{ $imgOptimised := .Fill "200x300 webp photo q90 smart" }}
+                            <img src="{{ $imgOptimised.Permalink }}" />
+                        </div>
+                        {{ end }}
+                    {{ end }}
+                </div>
+            </div>
+            {{ end }}
+        </div>
+
+        <div class="row">
+            <p class="mb-3 mt-2 text-center text-md-end"><a class="btn btn-warning px-5" href="{{ .Permalink }}">More &rarr;</a></p>
+        </div>
+    </section>
+    {{ end }}
+
+    
+    {{ with .Site.GetPage "gallery" }}
+    <h2 class="px-4 py-2">Gallery</h2>
+    <section class="p-4 mb-5 module shadow-lg">
+        <div class="row">
+            {{ range first 6 .Pages }}
+                {{ $entry := . }}
+                {{ with .Params.Image }}
+                {{ with resources.Get . }}
+                    {{ $imgDesktopOptimised := .Fill "500x500 webp drawing q90 smart" }}
+                    {{ $imgMobileOptimised := .Fill "400x400 webp drawing q75 smart" }}
+                    <div class="col-sm-6 col-lg-4 mb-4">
+                        <a href="{{ $entry.Permalink }}">
+                            <picture>
+                                <source srcset="{{ $imgDesktopOptimised.Permalink }}" media="(min-width: 576px)"/>
+                                <source srcset="{{ $imgMobileOptimised.Permalink }}" media="(max-width: 576px)"/>
+                                <img class="img-thumbnail" src="{{ $imgDesktopOptimised.Permalink }}" alt="{{ $entry.Title }}" title="{{ $entry.Title }}" />
+                            </picture>
+                        </a>
+                    </div>
+                {{ end }}
+                {{ end }}
+            {{ end }}
+        </div>
+
+        <div class="row">
+            <p class="mb-3 mt-2 text-center text-md-end"><a class="btn btn-warning px-5" href="{{ .Permalink }}">More &rarr;</a></p>
+        </div>
+    </section>
+    {{ end }}
+</main>
+{{ end }}

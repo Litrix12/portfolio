@@ -1,0 +1,18 @@
+{{ define "header" }}
+<div class="hero-slim container d-flex flex-column justify-content-center">
+    <div class="px-3-md m-5-md">
+        <h1 class="display-1">{{ .Title | markdownify }}</h1>
+        {{ with .Description }}
+            <p class="lead">{{ . }}</p>
+        {{ end }}
+    </div>
+</div>
+{{ end }}
+
+{{ define "main" }}
+<main class="container text-dark">
+    <section class="p-4 mb-5 module shadow-lg">
+        {{ .Content }}
+    </section>
+</main>
+{{ end }}

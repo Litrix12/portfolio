@@ -1,0 +1,42 @@
+{{ define "coverstyle" }}
+{{ $blur := 2 }}
+{{ $brightness := -10 }}
+{{ with .Site.Params.head.background.blur }}{{ $blur = . }}{{ end }}
+{{ with .Site.Params.head.background.brightness }}{{ $brightness = . }}{{ end }}
+
+{{ with .Params.Cover }}
+{{ with resources.Get . }}
+{{ $imgOptimised := .Fill "1920x800 webp photo q90 smart" | images.Filter (images.GaussianBlur $blur) (images.Brightness $brightness) }}
+<style>
+    .cover {
+        background-image: url("{{ $imgOptimised.Permalink }}");
+    }
+</style>
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{ define "header" }}
+<div class="hero-slim container d-flex flex-column justify-content-center">
+    <div class="px-3-md m-5-md">
+        <h1 class="display-1">{{ .Title | markdownify }}</h1>
+        {{ with .Description }}
+        <p class="lead">{{ . }}</p>
+        {{ end }}
+        <p>
+            Published <time datetime="{{ .Date }}">{{ .Date | time.Format ":date_medium" }}</time>
+            {{- with index (first 1 (.GetTerms "categories")) 0 }}
+            under <a class="link-light" href="{{ .Permalink }}">{{ .LinkTitle }}</a>
+            {{ end }}
+        </p>
+    </div>
+</div>
+{{ end }}
+
+{{ define "main" }}
+<main class="container text-dark">
+    <section class="p-5 mb-5 module shadow-lg">
+        {{ .Content }}
+    </section>
+</main>
+{{ end }}

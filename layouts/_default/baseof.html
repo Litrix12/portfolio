@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="{{- site.Language.Lang -}}">
+<head>
+    {{- partial "head.html" . -}}
+    {{- partial "styles.html" . -}}
+    {{- block "coverstyle" . }}
+        {{- with .Site.Params.head.background }}
+            {{ $blur := .blur }}
+            {{ $brightness := .brightness }}
+            {{ with resources.Get .asset }}
+                {{ $imgOptimised := .Fill "1920x800 webp photo q90 smart" | images.Filter (images.GaussianBlur $blur) (images.Brightness $brightness) }}
+                <style>
+                    .cover {
+                        background-image: url("{{ $imgOptimised.Permalink }}");
+                    }
+                </style>
+            {{ end }}
+        {{ end -}}
+    {{ end -}}
+</head>
+<body>
+<div class="bg-dark">
+    <div class="cover text-white p-4">
+        {{- partial "navigation.html" . -}}
+        {{- block "header" . }}
+        <div style="margin-bottom: 120px;"></div>
+        {{- end }}
+    </div>
+</div>
+
+{{- block "main" . }}{{- end }}
+
+{{- partial "footer.html" . -}}
+{{- partial "scripts.html" . -}}
+</body>
+</html>

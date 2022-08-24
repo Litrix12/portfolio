@@ -1,0 +1,16 @@
+{{ $entry := . }}
+{{ with .Params.Image }}
+{{ with resources.Get . }}
+    {{ $imgDesktopOptimised := .Resize "450x webp drawing q90 smart" }}
+    {{ $imgMobileOptimised := .Resize "400x webp drawing q75 smart" }}
+    <div class="col-sm-6 col-lg-4 mb-4">
+        <a href="{{ $entry.Permalink }}">
+            <picture>
+                <source srcset="{{ $imgDesktopOptimised.Permalink }}" media="(min-width: 576px)"/>
+                <source srcset="{{ $imgMobileOptimised.Permalink }}" media="(max-width: 576px)"/>
+                <img class="img-thumbnail" src="{{ $imgDesktopOptimised.Permalink }}" alt="{{ $entry.Title }}" title="{{ $entry.Title }}" loading="lazy" />
+            </picture>
+        </a>
+    </div>
+{{ end }}
+{{ end }}

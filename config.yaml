@@ -1,0 +1,46 @@
+baseURL: https://feanorrobertson.io
+languageCode: en-NZ
+title: Feanor Robertson
+author: Feanor Robertson
+copyright: "Feanor Robertson"
+
+paginate: 10
+
+params:
+  socials:
+    twitter: https://example.com
+    instagram: https://example.com
+    github: https://example.com
+
+  head:
+    background:
+      asset: img/header.jpg
+      blur: 0
+      brightness: -10
+    titleTag:
+      enabled: true
+      text: for hire
+      link: https://example.com
+
+  home:
+    hero:
+      title: Hi, I'm Feanor.
+      lede: Sapiente mollitia molestias quos adipisci omnis explicabo. Maxime ipsam ipsa perferendis labore recusandae est. Vero voluptatem commodi autem aliquid magni dolores provident.
+      contactLink: mailto:hello@example.com
+
+menu:
+  main:
+    - name: Home
+      url: /
+      weight: 1
+    - name: Blog
+      url: /blog/
+      weight: 2
+    - name: Gallery
+      url: /gallery/
+      weight: 3
+  
+  foot:
+    - name: Colophon
+      url: /colophon/
+      weight: 1

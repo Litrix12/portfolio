@@ -1,0 +1,22 @@
+<div class="container">
+    <header class="row justify-content-between">
+        <div class="col-auto mx-2 p-0 position-relative">
+            <a class="link-light text-decoration-none" href="/"><h3>{{ .Site.Title }}</h3></a>
+            {{ with .Site.Params.head.titleTag }}
+            {{ if .enabled }}
+                <div class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+                    <a class="link-dark text-decoration-none" href="{{ .link }}">{{ .text }}</a>
+                </div>
+            {{ end }}
+            {{ end }}
+        </div>
+
+        <nav class="col-auto mx-2 p-0 nav nav-masthead">
+            {{ $currentPage := . }}
+            {{ range .Site.Menus.main }}
+            <a class="nav-link fw-bold py-1 px-0{{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }} active{{end}}"
+                {{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}aria-current="page"{{end}} href="{{ .URL }}">{{ .Name }}</a>
+            {{ end }}
+        </nav>
+    </header>
+</div>

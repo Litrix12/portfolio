@@ -1,0 +1,71 @@
+<footer class="container">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-3 mb-5 mb-md-0">
+            <h5>Overview</h5>
+            <ul class="nav flex-column fw-light">
+                {{ with .Site.GetPage "blog" }}
+                {{ with .OutputFormats.Get "rss" }}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ .Permalink }}">Feed</a>
+                </li>
+                {{ end }}
+                {{ end }}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ .Sitemap.Filename | absURL }}">Sitemap</a>
+                </li>
+                {{ range .Site.Menus.foot }}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ .URL }}">{{ .Name }}</a>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3 mb-5 mb-md-0">
+            <h5>Directory</h5>
+            <ul class="nav flex-column fw-light">
+                {{ range .Site.Menus.main }}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ .URL }}">{{ .Name }}</a>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+        <div class="col-12 col-md-3 col-sm-12 mb-5 mb-md-0">
+            {{ with .Site.GetPage "blog" }}
+            <h5>From the <a class="link-dark" href="{{ .Permalink }}">Blog</a></h5>
+            <ul class="nav flex-column">
+                {{ range first 2 .Pages }}
+                <li class="nav-item mb-3">
+                    <a class="nav-link pb-0" href="{{ .Permalink }}">{{ .Title }}</a>
+                    <p class="m-0 ps-3 fs-6 fw-light">
+                        <time datetime="{{ .Date }}">
+                            {{ .Date | time.Format ":date_medium" }}
+                        </time>
+                    </p>
+                </li>
+                {{ end }}
+            </ul>
+
+            <hr class="text-muted mt-0 mb-3">
+            <p>
+                <a class="btn btn-sm btn-dark float-end" href="{{ .Permalink }}">More &rarr;</a>
+            </p>
+            {{ end }}
+        </div>
+        <div class="col-md-3 col-sm-12 text-center text-md-end">
+            <p class="my-0">&copy; {{ .Site.Copyright }} {{ now.Year }}</p>
+            <p class="text-muted">Hello from Auckland</p>
+            <p>
+                {{ if .Site.Params.socials }}
+                {{- partial "socials.html" ( dict "context" . ) -}} <span class="ms-1">&middot;</span>
+                {{ end }}
+                {{ with .Site.GetPage "blog" }}
+                {{ with .OutputFormats.Get "rss" }}
+                <a class="ms-2 link-dark" href="{{ .Permalink }}"><i class="bi bi-rss"></i></a>
+                {{ end }}
+                {{ end }}
+            </p>
+        </div>
+    </div>
+</footer>

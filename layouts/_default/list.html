@@ -1,0 +1,25 @@
+{{ define "header" }}
+<div class="hero-slim container d-flex flex-column justify-content-center">
+    <div class="px-3 m-5-md">
+        <h1 class="display-1">{{ .Title | markdownify }}</h1>
+    </div>
+</div>
+{{ end }}
+
+{{ define "main" }}
+<main class="container text-dark">
+    <section class="p-4 mb-5 module shadow-lg">
+        {{ .Content }}
+
+        <ul class="list-group list-group-flush">
+            {{ range .Paginator.Pages }}
+            {{ .Render "li" }}
+            {{ end }}
+        </ul>
+
+        <div class="d-flex justify-content-center mt-3">
+            {{ template "_internal/pagination.html" (dict "page" . "format" "terse") }}
+        </div>
+    </section>
+</main>
+{{ end }}
